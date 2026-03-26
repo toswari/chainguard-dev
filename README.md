@@ -55,15 +55,15 @@ This project includes a comprehensive container security and supply chain implem
 
 | Metric | Single-Stage | Multi-Stage | After Remediation |
 |--------|--------------|-------------|-------------------|
-| Total vulnerabilities | 717 | 56 | ~35 |
-| Critical vulnerabilities | 41 | 4 | 1 |
-| High vulnerabilities | 276 | 12 | 5 |
-| Medium vulnerabilities | 354 | 38 | 27 |
-| Low vulnerabilities | 46 | 2 | 2 |
+| Total vulnerabilities | 751 | 51 | 42 |
+| Critical vulnerabilities | 43 | 3 | 1 |
+| High vulnerabilities | 289 | 17 | 5 |
+| Medium vulnerabilities | 371 | 29 | 27 |
+| Low vulnerabilities | 48 | 2 | 2 |
 
-- **92% reduction** in total vulnerabilities with multi-stage builds
-- **37% additional reduction** after dependency remediation
-- **75% reduction** in critical vulnerabilities
+- **93% reduction** in total vulnerabilities with multi-stage builds
+- **18% additional reduction** after dependency remediation
+- **67% reduction** in critical vulnerabilities
 - **12x smaller** image size (19.3 MB vs 233 MB)
 
 #### Image Comparison

@@ -16,11 +16,11 @@ This document compares the security posture and characteristics of single-stage 
 
 **Image Size:** 233 MB
 
-**Vulnerability Count:** 717 total
-- Critical: 41
-- High: 276
-- Medium: 354
-- Low: 46
+**Vulnerability Count:** 751 total
+- Critical: 43
+- High: 289
+- Medium: 371
+- Low: 48
 
 ### Multi-Stage Build (go-multi)
 
@@ -33,10 +33,10 @@ This document compares the security posture and characteristics of single-stage 
 
 **Image Size:** 19.3 MB (92% smaller than single-stage)
 
-**Vulnerability Count:** 56 total
-- Critical: 4
-- High: 12
-- Medium: 38
+**Vulnerability Count:** 51 total
+- Critical: 3
+- High: 17
+- Medium: 29
 - Low: 2
 
 ## Security Comparison
@@ -56,11 +56,11 @@ This document compares the security posture and characteristics of single-stage 
 
 | Metric | Single-Stage | Multi-Stage | Reduction |
 |--------|--------------|-------------|-----------|
-| Total vulnerabilities | 717 | 56 | 92% |
-| Critical vulnerabilities | 41 | 4 | 90% |
-| High vulnerabilities | 276 | 12 | 96% |
-| Medium vulnerabilities | 354 | 38 | 89% |
-| Low vulnerabilities | 46 | 2 | 96% |
+| Total vulnerabilities | 751 | 51 | 93% |
+| Critical vulnerabilities | 43 | 3 | 93% |
+| High vulnerabilities | 289 | 17 | 94% |
+| Medium vulnerabilities | 371 | 29 | 92% |
+| Low vulnerabilities | 48 | 2 | 96% |
 
 ## Common Vulnerabilities (Both Images)
 

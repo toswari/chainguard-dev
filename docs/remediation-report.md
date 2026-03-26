@@ -35,10 +35,10 @@ Updated Docker base images to use patched Go version:
 
 | Metric | Before | After | Improvement |
 |--------|--------|-------|-------------|
-| Total vulnerabilities | 56 | ~35 | 37% reduction |
-| Critical | 4 | 1 | 75% reduction |
-| High | 12 | 5 | 58% reduction |
-| Medium | 38 | 27 | 29% reduction |
+| Total vulnerabilities | 51 | 42 | 18% reduction |
+| Critical | 3 | 1 | 67% reduction |
+| High | 17 | 5 | 71% reduction |
+| Medium | 29 | 27 | 7% reduction |
 | Low | 2 | 2 | No change |
 
 ### Key Improvements
@@ -79,9 +79,9 @@ Some stdlib vulnerabilities remain because they require Go 1.23+ or 1.24+:
 ## Conclusion
 
 The remediation efforts resulted in significant vulnerability reduction:
-- **37% fewer total vulnerabilities** in the multi-stage build
-- **75% reduction in critical vulnerabilities**
-- **58% reduction in high severity issues**
+- **18% fewer total vulnerabilities** in the multi-stage build
+- **67% reduction in critical vulnerabilities**
+- **71% reduction in high severity issues**
 
 The remaining vulnerabilities are primarily from:
 1. Go stdlib requiring newer Go versions (1.23/1.24)
