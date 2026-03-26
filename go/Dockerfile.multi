@@ -1,0 +1,15 @@
+# Build stage
+FROM golang:1.22.7-alpine AS builder
+WORKDIR /app
+COPY . .
+RUN CGO_ENABLED=0 go build -o hello-server .
+
+# Runtime stage
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+RUN adduser -D -g '' nonroot
+USER nonroot
+WORKDIR /home/nonroot
+COPY --from=builder /app/hello-server .
+EXPOSE 8080
+CMD ["./hello-server"]

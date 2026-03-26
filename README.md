@@ -6,7 +6,7 @@
 [![ruby](https://github.com/chainguard-dev/hello-melange-apko/actions/workflows/ruby.yml/badge.svg)](https://github.com/chainguard-dev/hello-melange-apko/actions/workflows/ruby.yml)
 [![rust](https://github.com/chainguard-dev/hello-melange-apko/actions/workflows/rust.yml/badge.svg)](https://github.com/chainguard-dev/hello-melange-apko/actions/workflows/rust.yml)
 
-This repo contains an  example app duplicated across 5 languages showing how to:
+This repo contains an example app duplicated across 5 languages showing how to:
 
 - Package source code into APKs using [`melange`](https://github.com/chainguard-dev/melange)
 - Build and publish OCI images from APKs using [`apko`](https://github.com/chainguard-dev/apko)
@@ -32,6 +32,161 @@ Wondering what "APKs" are? They're OS packages with a `.apk` extension (similar 
 
 Note: third-party server frameworks are used intentionally
 to validate the use of dependencies.
+
+---
+
+## Container Security & Supply Chain Implementation (Go)
+
+This project includes a comprehensive container security and supply chain implementation for the Go application, demonstrating best practices for secure containerization.
+
+### Implementation Summary
+
+| Phase | Description | Status |
+|-------|-------------|--------|
+| Phase 1 | Containerization (Single & Multi-stage Dockerfiles) | ✅ Complete |
+| Phase 2 | Security Analysis (CVE scanning with Grype) | ✅ Complete |
+| Phase 3 | Remediation (Dependency updates, base image optimization) | ✅ Complete |
+| Phase 4 | Supply Chain Security (SBOM generation, image signing) | ✅ Complete |
+| Phase 5 | Deployment (Kubernetes manifests, validation) | ✅ Complete |
+
+### Key Results
+
+#### Vulnerability Reduction
+
+| Metric | Single-Stage | Multi-Stage | After Remediation |
+|--------|--------------|-------------|-------------------|
+| Total vulnerabilities | 717 | 56 | ~35 |
+| Critical vulnerabilities | 41 | 4 | 1 |
+| High vulnerabilities | 276 | 12 | 5 |
+| Medium vulnerabilities | 354 | 38 | 27 |
+| Low vulnerabilities | 46 | 2 | 2 |
+
+- **92% reduction** in total vulnerabilities with multi-stage builds
+- **37% additional reduction** after dependency remediation
+- **75% reduction** in critical vulnerabilities
+- **12x smaller** image size (19.3 MB vs 233 MB)
+
+#### Image Comparison
+
+| Aspect | Single-Stage | Multi-Stage |
+|--------|--------------|-------------|
+| Image Size | 233 MB | 19.3 MB |
+| Go compiler | ✓ Present | ✗ Absent |
+| Source code | ✓ Present | ✗ Absent |
+| Build tools | ✓ Present | ✗ Absent |
+| Non-root user | ✗ No | ✓ Yes |
+
+### Security Features Implemented
+
+#### Container Security
+- Multi-stage Docker builds (minimal runtime image)
+- Non-root user execution
+- Read-only root filesystem
+- No privilege escalation allowed
+
+#### Supply Chain Security
+- SBOM (Software Bill of Materials) generated with Syft
+- Cryptographic image signing with Cosign (keyless/OIDC)
+- Transparency log entry created (index: 1186476072)
+
+#### Kubernetes Security
+```yaml
+securityContext:
+  runAsNonRoot: true
+  runAsUser: 65532
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+```
+
+### Project Structure
+
+```
+.
+├── go/
+│   ├── Dockerfile.single      # Single-stage build (insecure)
+│   ├── Dockerfile.multi       # Multi-stage build (secure)
+│   ├── go.mod                 # Go dependencies (patched)
+│   └── main.go                # Application source
+├── k8s/
+│   ├── go-deployment.yaml     # Kubernetes deployment
+│   └── go-service.yaml        # Kubernetes service
+├── docs/
+│   ├── vulnerability-analysis.md    # CVE analysis report
+│   ├── comparison-analysis.md       # Build comparison
+│   ├── remediation-report.md        # Remediation results
+│   └── deployment-validation.md     # Deployment validation
+├── reports/
+│   ├── go-single-cve-report.json    # Original scan
+│   ├── go-multi-cve-report.json     # Multi-stage scan
+│   └── go-multi-patched-cve-report.json  # Post-remediation
+├── scripts/
+│   └── verify-signatures.sh     # Signature verification
+└── keys/
+    ├── cosign.key               # Cosign private key
+    └── cosign.pub               # Cosign public key
+```
+
+### Quick Start
+
+#### Build and Run Locally
+
+```bash
+# Build multi-stage image
+cd go/
+docker build -f Dockerfile.multi -t go-multi-patched .
+
+# Run container
+docker run --rm -p 8080:8080 go-multi-patched
+
+# Test
+curl http://localhost:8080
+# Output: Hello World!
+```
+
+#### Deploy to Kubernetes
+
+```bash
+# Load image into k3s
+docker save go-multi-patched:latest | sudo k3s ctr images pull localhost:5000/go-multi-patched:latest
+
+# Apply manifests
+kubectl apply -f k8s/go-deployment.yaml -f k8s/go-service.yaml
+
+# Verify
+kubectl get pods -l app=go-hello-server
+kubectl port-forward svc/go-hello-server 8080:8080
+```
+
+#### Verify Image Signature
+
+```bash
+# Run verification script
+./scripts/verify-signatures.sh
+
+# Or manually
+cosign verify localhost:5000/go-multi-patched:latest --insecure-ignore-sct
+```
+
+### Documentation
+
+| Document | Description |
+|----------|-------------|
+| [`docs/vulnerability-analysis.md`](./docs/vulnerability-analysis.md) | Detailed CVE analysis and severity breakdown |
+| [`docs/comparison-analysis.md`](./docs/comparison-analysis.md) | Single-stage vs multi-stage build comparison |
+| [`docs/remediation-report.md`](./docs/remediation-report.md) | Remediation steps and before/after results |
+| [`docs/deployment-validation.md`](./docs/deployment-validation.md) | Kubernetes deployment validation report |
+
+### Tools Used
+
+| Tool | Purpose |
+|------|---------|
+| Docker | Container build and runtime |
+| Grype | CVE vulnerability scanning |
+| Syft | SBOM generation |
+| Cosign | Image signing and verification |
+| k3s/kubectl | Kubernetes deployment |
+
+---
 
 ## "The hard way"
 
@@ -218,4 +373,3 @@ curl -s http://localhost:8080
 
 ```
 Hello World!
-```

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-hello-server
+spec:
+  selector:
+    app: go-hello-server
+  ports:
+  - port: 8080
+    targetPort: 8080
+  type: ClusterIP
